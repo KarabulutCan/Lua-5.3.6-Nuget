@@ -1,0 +1,66 @@
+﻿<Project>
+
+  <!-- x64 için Derleme Ayarları -->
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
+    <ClCompile>
+      <!-- AdditionalIncludeDirectories: build\native -> ../.. -> include -->
+      <AdditionalIncludeDirectories>
+        $(AdditionalIncludeDirectories);
+        $(MSBuildThisFileDirectory)../../include
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+
+    <Link>
+      <!-- Lib path: build\native -> ../.. -> lib/native/x64 -->
+      <AdditionalLibraryDirectories>
+        $(AdditionalLibraryDirectories);
+        $(MSBuildThisFileDirectory)../../lib/native/x64
+      </AdditionalLibraryDirectories>
+
+      <!-- Burada derleyicinizin tanıdığı kütüphane ismi (liblua53.a veya lua53.lib) -->
+      <AdditionalDependencies>
+        liblua53.a;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <!-- x86 için Derleme Ayarları (isterseniz ekleyin) -->
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x86'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+        $(AdditionalIncludeDirectories);
+        $(MSBuildThisFileDirectory)../../include
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+
+    <Link>
+      <AdditionalLibraryDirectories>
+        $(AdditionalLibraryDirectories);
+        $(MSBuildThisFileDirectory)../../lib/native/x86
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+        liblua53.a;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <!-- DLL Kopyalama (After Build) -->
+  <!-- x64'te lua53.dll, x86 varsa orayı da ekleyebilirsiniz -->
+  <ItemGroup Condition="'$(Platform)'=='x64'">
+    <LuaDlls Include="$(MSBuildThisFileDirectory)../../lib/native/x64/*.dll" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)'=='x86'">
+    <LuaDlls Include="$(MSBuildThisFileDirectory)../../lib/native/x86/*.dll" />
+  </ItemGroup>
+
+  <Target Name="CopyLuaDlls" AfterTargets="Build">
+    <Copy
+      SourceFiles="@(LuaDlls)"
+      DestinationFolder="$(OutDir)"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

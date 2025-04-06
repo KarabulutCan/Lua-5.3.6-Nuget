@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Lua53Package</id>
+    <version>1.0.0</version>
+    <authors>YourName</authors>
+    <owners>YourName</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://www.lua.org/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A native C++ NuGet package that provides Lua 5.3.6 with DLL and headers.</description>
+    <tags>Lua Scripting</tags>
+
+    <!-- Paketi "native" olarak işaretleyin ki .NET TFM uyarısı kalksın -->
+    <packageTypes>
+      <packageType name="native" />
+    </packageTypes>
+  </metadata>
+
+  <files>
+    <!-- Tüm header dosyalarınızı ekler -->
+    <file src="include\**\*.*" target="include" />
+
+    <!-- x64 dosyaları -->
+    <file src="lib\native\x64\**\*.*" target="lib\native\x64" />
+
+    <!-- x86 dosyaları varsa -->
+    <!-- <file src="lib\native\x86\**\*.*" target="lib\native\x86" /> -->
+
+    <!-- .targets dosyası -->
+    <file src="build\native\LuaPackage.targets" target="build\native" />
+  </files>
+</package>
